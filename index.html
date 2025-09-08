@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Yoram Ezra — Strategic Marketing & MarTech</title>
+<style>
+  :root{
+    --ink:#111;
+    --paper:#f5f3ee;
+    --blue:#1f5aff;
+    --red:#ff3b30;
+    --yellow:#ffd60a;
+    --gray:#6b7280;
+    --radius:28px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--ink);text-underline-offset:3px;text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:40px 20px 72px}
+
+  /* ---------------- HERO CARD ---------------- */
+  .hero{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+    padding:42px;
+    background:#fff;
+    border-radius:var(--radius);
+    box-shadow:0 24px 60px rgba(0,0,0,.08);
+    overflow:hidden; /* keeps shapes inside rounded corners */
+  }
+  .hero::before{
+    content:"";
+    position:absolute; top:0; left:0; right:0; height:6px;
+    background:linear-gradient(90deg,var(--red) 0 28%,var(--blue) 28% 62%,var(--yellow) 62% 100%);
+    z-index:2;
+  }
+
+  /* Floating geometric elements (behind content) */
+  .shape{
+    position:absolute; border-radius:50%;
+    opacity:.14; filter:saturate(110%);
+    animation:float 9s ease-in-out infinite;
+    z-index:0; pointer-events:none;
+  }
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
+  .s1{ width:320px; height:320px; background:var(--blue); top:-80px; left:-140px; animation-delay:.1s }
+  .s2{ width:240px; height:240px; background:var(--red); top:14px; right:-120px; animation-delay:1.1s }
+  .s3{ width:520px; height:520px; border:14px solid var(--yellow); bottom:-200px; left:26%; animation-delay:.6s; background:transparent }
+  .s4{ width:360px; height:38px; background:#000; left:12%; top:73%; border-radius:19px; opacity:.07; animation:none }
+
+  /* Row 1: header */
+  .hero-header{position:relative;z-index:3}
+  .kicker{font-weight:800;letter-spacing:.12em;text-transform:uppercase;font-size:.85rem;color:var(--gray)}
+  h1{font-size:clamp(2rem,4.2vw,3rem);line-height:1.1;margin:.4em 0 .25em;font-weight:900;letter-spacing:-.02em}
+
+  /* Row 2: text (left) + headshot (right) */
+  .hero-body{
+    display:grid;
+    grid-template-columns:1.2fr .8fr;
+    gap:24px;
+    align-items:center; /* vertical centering */
+    position:relative;z-index:3;
+  }
+  .sub{font-size:1.05rem;color:#2b2b2b;margin:0 0 8px 0}
+  .elevator{font-size:1rem;color:#374151;max-width:60ch}
+  .elevator .inline-note{display:block;margin-top:10px;color:#222}
+
+  .photo-wrap{
+    display:flex;
+    align-items:center;          /* vertical center */
+    justify-content:center;      /* horizontal center */
+    min-height:100%;
+  }
+  .headshot{
+    width:185px;
+    height:185px;
+    border-radius:50%;
+    object-fit:cover;
+    border:6px solid #fff;
+    box-shadow:0 14px 30px rgba(0,0,0,.16);
+  }
+
+  /* Row 3: buttons */
+  .hero-footer{display:flex;flex-direction:column;gap:14px;position:relative;z-index:3}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap}
+  .btn{
+    display:inline-block; padding:12px 20px; border-radius:999px;
+    font-weight:800; transition:.2s ease;
+    border:2px solid var(--ink); background:var(--yellow); color:#111;
+  }
+  .btn:hover{transform:translateY(-3px) scale(1.02)}
+  .btn.secondary{background:#fff;border-color:#cfd2d7;color:#0f172a}
+
+  .contact{display:flex;justify-content:flex-start;flex-wrap:nowrap;gap:12px;overflow-x:auto}
+  .chip{
+    background:#fff;border:1px solid #e5e7eb;border-radius:999px;
+    padding:8px 12px;font-size:.95rem;transition:.2s;white-space:nowrap
+  }
+  .chip:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+
+  /* ---------------- Common sections ---------------- */
+  section{margin:56px 0}
+  .sec-title{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+  .sec-title .mark{width:12px;height:28px;border-radius:6px;background:var(--blue)}
+  .lead{color:#4b5563;max-width:70ch}
+
+  .grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}
+  @media(max-width:980px){
+    .hero-body{grid-template-columns:1fr}
+    .photo-wrap{justify-content:center}
+    .grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:640px){.grid{grid-template-columns:1fr}}
+
+  .card{background:#fff;border-radius:18px;border:1.5px solid #ececec;padding:18px;transition:.18s ease}
+  .card:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 18px 40px rgba(0,0,0,.06)}
+  .card h3{margin:6px 0;font-size:1.05rem}
+  .card p{color:#6b7280;font-size:.98rem}
+
+  .metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:14px}
+  .metric{background:#fff;border-radius:18px;padding:22px;border:1.5px solid #ececec;transition:.2s}
+  .metric:hover{transform:scale(1.03);background:var(--yellow)}
+  .metric strong{font-size:2rem}
+  .metric span{color:#6b7280;font-size:.95rem}
+
+  .industries{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .industry{background:#fff;border:1.5px solid #ececec;border-radius:18px;padding:18px;text-align:center;transition:.2s}
+  .industry:hover{background:var(--blue);color:#fff;transform:translateY(-4px)}
+  .industry .emoji{font-size:2rem;margin-bottom:6px}
+  .industry .name{font-weight:800}
+
+  /* Scroll reveal */
+  .reveal{opacity:0; transform:translateY(22px) scale(.985); transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1; transform:translateY(0) scale(1)}
+  .stagger > * {opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease}
+  .stagger.in-view > * {opacity:1; transform:translateY(0)}
+  .stagger.in-view > *:nth-child(1){transition-delay:.05s}
+  .stagger.in-view > *:nth-child(2){transition-delay:.12s}
+  .stagger.in-view > *:nth-child(3){transition-delay:.19s}
+  .stagger.in-view > *:nth-child(4){transition-delay:.26s}
+  .stagger.in-view > *:nth-child(5){transition-delay:.33s}
+  .stagger.in-view > *:nth-child(6){transition-delay:.40s}
+
+  /* CTA */
+  .cta{
+    background:linear-gradient(135deg,rgba(31,90,255,.12),rgba(255,59,48,.12));
+    border:2px dashed rgba(0,0,0,.6);
+    border-radius:24px;padding:38px;text-align:center;color:#0f172a;
+  }
+  .cta h2{margin:0 0 10px}
+  .cta p{max-width:60ch;margin:0 auto 18px;color:#374151}
+  .cta a{display:inline-block;padding:14px 28px;border-radius:999px;background:#111;color:#fff;font-weight:700;text-decoration:none;transition:.2s}
+  .cta a:hover{transform:translateY(-3px) scale(1.02)}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <!-- HERO CARD -->
+    <section class="hero reveal" data-reveal>
+      <!-- floating shapes behind content -->
+      <div class="shape s1"></div>
+      <div class="shape s2"></div>
+      <div class="shape s3"></div>
+      <div class="s4"></div>
+
+      <!-- Row 1: header -->
+      <div class="hero-header">
+        <div class="kicker">Yoram Ezra</div>
+        <h1>Strategic Marketing & MarTech Leadership</h1>
+      </div>
+
+      <!-- Row 2: sub + body text (left) / headshot (right) -->
+      <div class="hero-body">
+        <div>
+          <p class="sub"><strong>Digital marketing expert</strong> in CRM, AI-powered engagement, and measurable outcomes.</p>
+          <p class="elevator">
+            I help organizations harness AI and modern marketing technology to grow audiences, streamline operations,
+            and deliver results that boards and donors can see.
+            <span class="inline-note">
+              I also created <strong>SnipeRank</strong> — an AI-powered SEO analyzer that scores websites on structure, clarity,
+              authority, and AI discoverability.
+            </span>
+          </p>
+        </div>
+        <div class="photo-wrap">
+          <img class="headshot" src="yoram-ezra-photo.jpg" alt="Yoram Ezra headshot"/>
+        </div>
+      </div>
+
+      <!-- Row 3: buttons -->
+      <div class="hero-footer">
+        <div class="cta-row">
+          <a class="btn" href="https://quontora.com" target="_blank" rel="noopener">Work With Me</a>
+          <a class="btn secondary" href="https://sniperank.quontora.com" target="_blank" rel="noopener">Explore SnipeRank</a>
+        </div>
+        <div class="contact">
+          <a class="chip" href="mailto:theyoramezra@gmail.com">📧 theyoramezra@gmail.com</a>
+          <div class="chip">📱 347.302.2344</div>
+          <a class="chip" href="https://www.linkedin.com/in/yoramezra/" target="_blank" rel="noopener">🔗 LinkedIn</a>
+          <div class="chip">🚀 Quontora Consulting</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark"></div><h2>Services & Solutions</h2></div>
+      <p class="lead">Simple, scalable, jargon-free execution. I modernize stacks, align teams, and design programs that move the numbers.</p>
+      <div class="grid stagger" data-stagger>
+        <div class="card"><h3>CRM Modernization</h3><p>Salesforce Nonprofit Cloud & Marketing Cloud: unified data, personalized journeys.</p></div>
+        <div class="card"><h3>Audience Strategy</h3><p>Segmentation, lifecycle programs, cross-channel engagement.</p></div>
+        <div class="card"><h3>Analytics & Dashboards</h3><p>Behavioral KPIs and insights that leadership teams actually use.</p></div>
+        <div class="card"><h3>AI-Powered Marketing</h3><p>Clarity, discoverability, and Gen-AI integration for real results.</p></div>
+        <div class="card"><h3>Automation Workflows</h3><p>Onboarding, reactivation, and nurture campaigns at scale.</p></div>
+        <div class="card"><h3>Nonprofit Strategy</h3><p>Deep experience aligning technology with mission and fundraising.</p></div>
+      </div>
+    </section>
+
+    <!-- Impact -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark" style="background:var(--red)"></div><h2>Impact & Results</h2></div>
+      <div class="metrics stagger" data-stagger>
+        <div class="metric"><strong>20+</strong><span>Years of Experience</span></div>
+        <div class="metric"><strong>5</strong><span>Major CRM Transformations</span></div>
+        <div class="metric"><strong>100K+</strong><span>Constituents Engaged</span></div>
+        <div class="metric"><strong>3×</strong><span>Average Engagement Lift</span></div>
+      </div>
+    </section>
+
+    <!-- Industries -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark" style="background:var(--yellow)"></div><h2>Industries Served</h2></div>
+      <div class="industries stagger" data-stagger>
+        <div class="industry"><div class="emoji">✡️</div><div class="name">Jewish Organizations</div><div class="desc">Synagogues, Federations, JCCs</div></div>
+        <div class="industry"><div class="emoji">🏛️</div><div class="name">Nonprofits</div><div class="desc">Mission-driven impact</div></div>
+        <div class="industry"><div class="emoji">🎓</div><div class="name">Education</div><div class="desc">Schools & Institutions</div></div>
+        <div class="industry"><div class="emoji">🎨</div><div class="name">Arts & Culture</div><div class="desc">Museums & Cultural Centers</div></div>
+      </div>
+    </section>
+
+    <!-- Core Competencies -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark"></div><h2>Core Competencies</h2></div>
+      <div class="grid stagger" data-stagger>
+        <div class="card"><h3>Marketing Technologies</h3><p>Salesforce Nonprofit Cloud & Marketing Cloud, Pardot, HubSpot, GA4, GTM.</p></div>
+        <div class="card"><h3>Strategic Capabilities</h3><p>Brand positioning, multichannel campaign design, journey mapping, analytics.</p></div>
+        <div class="card"><h3>Engagement Channels</h3><p>Email, SMS, web personalization, mobile optimization, social integration.</p></div>
+        <div class="card"><h3>Compliance & Governance</h3><p>GDPR/CCPA, permission-based marketing, vendor management, cross-functional leadership.</p></div>
+        <div class="card"><h3>Content & SEO</h3><p>AI discoverability, information architecture, SnipeRank scoring methodology.</p></div>
+        <div class="card"><h3>Data & Reporting</h3><p>Executive dashboards, cohort analysis, board-ready reporting.</p></div>
+      </div>
+    </section>
+
+    <!-- Professional Journey -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark" style="background:var(--red)"></div><h2>Professional Journey</h2></div>
+      <div class="grid" style="grid-template-columns:1fr">
+        <div class="card"><h3>Principal Consultant — Quontora Consulting / Yoram Ezra Strategies</h3><p><em>2023 – Present | New York, NY</em></p><p>Founded Quontora; conceived and launched SnipeRank; developed AI discoverability methodologies; delivered CRM/MarTech modernization for mission-driven orgs.</p></div>
+        <div class="card"><h3>Director, Audience Engagement & Marketing Technologies — URJ</h3><p><em>2019 – 2023 | New York, NY</em></p><p>Directed enterprise CRM & marketing technology modernization; implemented Salesforce Nonprofit Cloud & Marketing Cloud; designed segmentation and lifecycle programs.</p></div>
+        <div class="card"><h3>Director of Operations & Sales — Robinson Studios LLC</h3><p><em>2016 – 2019 | Brooklyn, NY</em></p><p>Led shift to digital-first marketing and sales systems; upgraded CRM and automation; aligned sales with brand positioning.</p></div>
+        <div class="card"><h3>Director, Web Strategy — Hadassah</h3><p><em>2008 – 2016 | New York, NY</em></p><p>Drove digital transformation aligned with marketing, fundraising, and advocacy; improved conversion tracking; led CMS migration and accessibility upgrades.</p></div>
+      </div>
+    </section>
+
+    <!-- My Approach -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark" style="background:var(--yellow)"></div><h2>My Approach</h2></div>
+      <div class="card" style="border-left:4px solid var(--blue)">
+        <p><strong>Pragmatic over flashy.</strong> I bridge organizational goals and modern marketing technology to create measurable results quickly—without unnecessary complexity.</p>
+        <p><strong>Mission-aligned.</strong> Deep experience with Jewish and nonprofit sectors. I understand donor engagement, community building, and board expectations.</p>
+        <p><strong>Outcome-driven.</strong> Clear roadmaps, hands-on execution, honest guidance about what technology can realistically achieve for your team.</p>
+      </div>
+    </section>
+
+    <!-- SnipeRank (now contextual) -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark" style="background:var(--blue)"></div><h2>What is SnipeRank?</h2></div>
+      <div class="card">
+        <p><strong>SnipeRank</strong> is an AI-powered SEO analyzer I built. It evaluates a site’s <em>structure</em>, <em>clarity</em>, <em>authority</em>, and <em>AI discoverability</em> to surface concrete fixes that improve both human and AI-driven search visibility.</p>
+        <ul style="margin:12px 0 0 18px">
+          <li>Scores content architecture, headings, and internal links</li>
+          <li>Flags clarity issues and jargon that block comprehension</li>
+          <li>Assesses authority signals and trust markers</li>
+          <li>Checks readiness for AI overviews and LLM-driven answers</li>
+        </ul>
+        <p style="margin-top:12px">
+          <a class="btn" style="background:var(--blue);color:#fff;border-color:#0f172a" href="https://sniperank.quontora.com" target="_blank" rel="noopener">Explore SnipeRank</a>
+        </p>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="reveal" data-reveal>
+      <div class="sec-title"><div class="mark"></div><h2>Education</h2></div>
+      <div class="card">
+        <h3>BFA, Graphic Arts and Marketing</h3>
+        <p>Fashion Institute of Technology, SUNY — <em>Magna Cum Laude</em></p>
+      </div>
+    </section>
+
+    <!-- Closing CTA -->
+    <section class="cta reveal" data-reveal>
+      <h2>Let’s Build What’s Next</h2>
+      <p>From AI SEO to CRM transformations, I bring clarity and execution. Let’s start a conversation and design a roadmap that works.</p>
+      <a href="mailto:theyoramezra@gmail.com?subject=Schedule%20a%20Conversation">📩 Schedule a Conversation</a>
+    </section>
+  </div>
+
+  <!-- Scroll reveal -->
+  <script>
+    const revealEls = document.querySelectorAll('[data-reveal]');
+    const staggerEls = document.querySelectorAll('[data-stagger]');
+    const opts = { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.15 };
+
+    const onReveal = (entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          if (entry.target.hasAttribute('data-stagger')) entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    };
+    const io = new IntersectionObserver(onReveal, opts);
+    revealEls.forEach(el => io.observe(el));
+    staggerEls.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
