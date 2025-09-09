@@ -37,6 +37,7 @@
     border-radius:var(--radius);
     box-shadow:0 24px 60px rgba(0,0,0,.08);
     overflow:hidden; /* keeps shapes inside rounded corners */
+    isolation:isolate; /* ensure z-index layering is predictable */
   }
   .hero::before{
     content:"";
@@ -48,15 +49,47 @@
   /* Floating geometric elements (behind content) */
   .shape{
     position:absolute; border-radius:50%;
-    opacity:.14; filter:saturate(110%);
-    animation:float 9s ease-in-out infinite;
+    opacity:.16; filter:saturate(110%);
     z-index:0; pointer-events:none;
+    will-change:transform;                 /* smoother on mobile GPUs */
+    transform:translate3d(0,0,0);          /* promote to GPU layer */
   }
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-28px)}}
-  .s1{ width:320px; height:320px; background:var(--blue); top:-80px; left:-140px; animation-delay:.1s }
-  .s2{ width:240px; height:240px; background:var(--red); top:14px; right:-120px; animation-delay:1.1s }
-  .s3{ width:520px; height:520px; border:14px solid var(--yellow); bottom:-200px; left:26%; animation-delay:.6s; background:transparent }
-  .s4{ width:360px; height:38px; background:#000; left:12%; top:73%; border-radius:19px; opacity:.07; animation:none }
+
+  /* More noticeable but tasteful motion */
+  @keyframes floatA{
+    0%   { transform:translate3d(0, 0, 0) rotate(0deg) }
+    25%  { transform:translate3d(22px, -55px, 0) rotate(2deg) }
+    50%  { transform:translate3d(0, -90px, 0) rotate(0deg) }
+    75%  { transform:translate3d(-18px, -55px, 0) rotate(-2deg) }
+    100% { transform:translate3d(0, 0, 0) rotate(0deg) }
+  }
+  @keyframes floatB{
+    0%   { transform:translate3d(0, 0, 0) rotate(0deg) }
+    33%  { transform:translate3d(-28px, -60px, 0) rotate(-3deg) }
+    66%  { transform:translate3d(18px, -100px, 0) rotate(2deg) }
+    100% { transform:translate3d(0, 0, 0) rotate(0deg) }
+  }
+  @keyframes orbit{
+    0%   { transform:translate3d(0,0,0) rotate(0deg) }
+    50%  { transform:translate3d(0,-80px,0) rotate(12deg) }
+    100% { transform:translate3d(0,0,0) rotate(24deg) }
+  }
+  @keyframes wobble{
+    0%   { transform:translate3d(0,0,0) scaleX(1) }
+    50%  { transform:translate3d(8px,-6px,0) scaleX(1.04) }
+    100% { transform:translate3d(0,0,0) scaleX(1) }
+  }
+
+  .s1{ width:320px; height:320px; background:var(--blue); top:-80px; left:-140px; animation:floatA 13s ease-in-out infinite; animation-delay:.2s }
+  .s2{ width:240px; height:240px; background:var(--red); top:14px; right:-120px; animation:floatB 16s cubic-bezier(.4,.0,.2,1) infinite; animation-delay:.8s }
+  .s3{ width:520px; height:520px; border:14px solid var(--yellow); bottom:-200px; left:26%; background:transparent; border-radius:50%;
+       animation:orbit 28s ease-in-out infinite alternate; opacity:.14 }
+  .s4{ width:360px; height:38px; background:#000; left:12%; top:73%; border-radius:19px; opacity:.07; animation:wobble 9s ease-in-out infinite }
+
+  /* Respect users who prefer reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .shape{ animation:none !important; }
+  }
 
   /* Row 1: header */
   .hero-header{position:relative;z-index:3}
@@ -64,7 +97,7 @@
   h1{font-size:clamp(2rem,4.2vw,3rem);line-height:1.1;margin:.4em 0 .25em;font-weight:900;letter-spacing:-.02em}
 
   /* Mobile-only headshot placement in header */
-  .mobile-headshot{display:none; justify-content:center; margin:12px 0 4px}
+  .mobile-headshot{display:none; justify-content:center; margin:12px 0 4px; position:relative; z-index:3}
   .mobile-headshot .headshot{
     width:185px;height:185px;border-radius:50%;object-fit:cover;border:6px solid #fff;box-shadow:0 14px 30px rgba(0,0,0,.16);
   }
@@ -83,8 +116,8 @@
 
   .photo-wrap{
     display:flex;
-    align-items:center;          /* vertical center */
-    justify-content:center;      /* horizontal center */
+    align-items:center;
+    justify-content:center;
     min-height:100%;
   }
   .headshot{
@@ -124,15 +157,15 @@
   @media(max-width:980px){
     /* stack body; hide body photo; show header photo on mobile */
     .hero-body{grid-template-columns:1fr}
-    .photo-wrap{display:none}                /* hide original body photo on mobile */
-    .mobile-headshot{display:flex}           /* show mobile headshot in header */
+    .photo-wrap{display:none}
+    .mobile-headshot{display:flex}
 
     .grid{grid-template-columns:repeat(2,1fr)}
     /* stack the four pill buttons for mobile only */
     .contact{
       flex-wrap:nowrap;
       overflow-x:visible;
-      flex-direction:column;     /* vertical stack */
+      flex-direction:column;
       align-items:stretch;
       gap:10px;
     }
